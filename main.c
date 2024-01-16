@@ -3,16 +3,26 @@
 
 int main(){
 
-	time_t currentTime = time(NULL);
-	struct tm *cur_time = localtime(&currentTime);
-
-	char calendarBuffer[100];
-	char timeBuffer[50];
-	
-	int displayCalendarInfo = strftime(calendarBuffer, 100,"%A %d %B %Y", cur_time);
-	int displayTimeInfo = strftime(timeBuffer, 50, "Current time: %H:%M:%S", cur_time);
+	// 25 minute timer in seconds
+	int pomodoroTimer = 1500;
+	int cooldownTimer = 300;
 
 	printf("Welcome to the Pomodoro Clock App!\n");
-	printf("%s\n", calendarBuffer);
-	printf("%s\n", timeBuffer);
+	printf("Time remaining: \n");
+
+	while(pomodoroTimer > 0){
+
+		int m = pomodoroTimer / 60;
+		int s = pomodoroTimer % 60;
+
+		printf("\r%02d:%02d", m, s);
+
+		fflush(stdout);
+	
+		clock_t stop = clock() + CLOCKS_PER_SEC;
+
+		while (clock() < stop){}
+
+		pomodoroTimer--;
+	}
 }
